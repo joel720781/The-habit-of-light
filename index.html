@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>療癒習慣養成首頁</title>
+    <style>
+        #loadPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: white;
+}
+#contentFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: 'Arial', sans-serif;
+background:
+  linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)),
+  url('images/indexbg.png');
+background-size: cover;
+background-position: center;
+
+
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          animation: fadeInPage 1.5s ease forwards;
+          opacity: 0;
+        }
+
+        @keyframes fadeInPage {
+          to { opacity: 1; }
+        }
+
+        .container {
+          text-align: center;
+        }
+
+       h1 {
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+}
+
+
+        .menu-btn {
+          opacity: 0;
+          transform: translateY(20px);
+          background: rgba(255, 255, 255, 0.8);
+          border: none;
+          border-radius: 10px;
+          padding: 12px 24px;
+          font-size: 1.1em;
+          margin: 10px;
+          cursor: pointer;
+          transition: background 0.5s ease;
+        }
+.btn-soft-gradient {
+  background: linear-gradient(to right, #fdfbfb, #ebedee);
+  color: #444;
+  border: none;
+  border-radius: 30px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+.btn-soft-gradient:hover {
+  background: linear-gradient(to right, #e0f7fa, #fff1f8);
+  transform: scale(1.05);
+}
+
+        .menu-btn:hover {
+          background: #ffffffcc;
+        }
+
+        .slide-in {
+          animation: slideIn 0.6s ease forwards;
+        }
+
+        @keyframes slideIn {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="mainMenu">
+    <h1>🌿 歡迎進入療癒成長空間 🌿</h1>
+    <button  class="menu-btn" onclick="loadPage('Good habits.html')">✨ 21天習慣養成</button>
+    <button  class="menu-btn" onclick="loadPage('21daygoodenergy.html')">🌠 21天正能量</button>
+
+    <button class="menu-btn" onclick="goTo('echo.html')">🔮 正能量卡牌</button>
+ </div>
+<div id="backButton" style="display: none; position: fixed; top: 20px; left: 20px; z-index: 1000;">
+    <button class="btn-soft-gradient" onclick="goBack()">回首頁 🏠</button>
+</div>
+
+
+<div id="musicControl" style="position: fixed; top: 20px; right: 20px; z-index: 999;">
+    <button class="btn-soft-gradient" id="musicToggleBtn" onclick="toggleMusic()">🔇 關閉音樂</button>
+</div>
+<audio id="bgMusic" src="audio/bg-music.mp3"  loop></audio>
+
+
+<script>
+    window.onload = function () {
+      const buttons = document.querySelectorAll('.menu-btn');
+      buttons.forEach((btn, i) => {
+        setTimeout(() => {
+          btn.classList.add('slide-in');
+        }, i * 350);
+      });
+
+    };
+    window.addEventListener("click", function once() {
+    const audio = document.getElementById("bgMusic");
+    audio.play().catch(err => {
+      console.warn("音樂播放被瀏覽器限制：", err);
+    });
+    window.removeEventListener("click", once);
+  });
+function toggleMusic() {
+  const audio = document.querySelector("#bgMusic");
+  const btn = document.querySelector("#musicToggleBtn");
+  if (audio.paused) {
+    audio.play();
+    btn.textContent = "🔇 關閉音樂";
+  } else {
+    audio.pause();
+    btn.textContent = "🔊 開啟音樂";
+  }
+}
+  function loadPage(url) {
+  console.log("嘗試載入頁面：", url);
+  document.getElementById('contentFrame').src = url;
+  document.querySelector('.container').style.display = 'none';
+ document.getElementById('backButton').style.display = 'block'; // 顯示返回鍵
+  document.getElementById('pageContainer').style.display = 'block';
+}
+<!--    返回-->
+function goBack() {
+  document.getElementById("pageContainer").style.display = "none";
+  document.querySelector(".container").style.display = "block";
+  document.getElementById("backButton").style.display = "none";
+  document.getElementById("contentFrame").src = "";
+}
+
+</script>
+<div id="pageContainer" style="display: none;">
+    <iframe
+            id="contentFrame"
+            allow="autoplay"
+            style="width: 100vw; height: 100vh; border: none; display: block;"
+    ></iframe>
+</div>
+</body>
+</html>

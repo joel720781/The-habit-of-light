@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>療癒籤語</title>
+    <style>
+        body {
+           margin: 0;
+            height: 100vh;
+             display: flex;
+            flex-direction: column;
+            justify-content: center;
+           align-items: center;
+           background-size: cover;
+           background-position: center;
+          background-repeat: no-repeat;
+         font-family: "Arial", sans-serif;
+          overflow: hidden;
+            padding: 0;
+             text-align: center;
+        }
+
+        .bg-selector {
+          margin-bottom: 20px;
+            display: flex;
+              flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .bg-thumb {
+          width: 80px;
+          height: auto;
+          object-fit: cover;
+          margin: 5px;
+          border: 3px solid transparent;
+          border-radius: 8px;
+          cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .bg-thumb:hover {
+          border-color: #ffaa88;
+            transform: scale(1.05);
+        }
+
+        #fortune {
+           font-size: 1.5em;
+             background: rgba(255, 255, 255, 0.8);
+              padding: 20px 30px;
+              border-radius: 15px;
+             margin-bottom: 20px;
+             text-align: center;
+        }
+
+        button {
+          margin-top: 10px;
+          padding: 10px 16px;
+          font-size: 1em;
+          border: none;
+          border-radius: 8px;
+          background-color: rgba(255,255,255,0.8);
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #ffffffcc;
+        }
+        #contentWrapper {
+            position: absolute;
+             top: 40%;
+             left: 50%;
+            transform: translate(-50%, -50%);
+             text-align: center;
+             z-index:1;
+        }
+        #bgSelector {
+          position: relative;
+          z-index: 2;
+         margin-top: 300px;
+         text-align: center;
+}
+        @media (max-width: 600px) {
+    .bg-thumb {
+        width: 60px;
+    }
+            button {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+             #fortune {
+    width: 100%;
+     max-width: 100%;
+    margin: 0 auto;
+    font-size: 1.2em;
+    padding: 16px 20px;
+    line-height: 1.6;
+    }
+            #pupupButtonWrapper{
+    font-size: 1.2em;
+    padding: 16px 20px;
+    margin: 15px;
+    line-height: 1.6;
+        }
+        }
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  max-width: 80%;
+  max-height: 60%;
+  overflow-y: auto;
+  text-align: left;
+}
+.popup h2 {
+  margin-top: 0;
+  font-size: 1.4em;
+  text-align: center;
+}
+.popup ul {
+  list-style: none;
+  padding: 0;
+}
+.popup li {
+  margin: 10px 0;
+  border-bottom: 1px dashed #aaa;
+  padding-bottom: 5px;
+}
+.popup button {
+  margin-top: 20px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+#popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 15px;
+  z-index: 100;
+  box-shadow: 0 0 25px rgba(0,0,0,0.25);
+  max-width: 90%;
+  max-height: 70%;
+  overflow-y: auto;
+  text-align: center;
+}
+
+
+<!--集卡簿-->
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4); /* 白色霧化 */
+  z-index: 0;
+  border-radius: 12px;
+}
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+.card-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+}
+.card-popup .quote {
+  font-size: 1.2em;
+  margin: 10px 0 20px;
+}
+.card-popup textarea {
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: none;
+  font-size: 0.95em;
+}
+.card-popup button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffd6d6;
+  cursor: pointer;
+  font-size: 1em;
+  margin-right: 10px;
+}
+.card-popup button:hover {
+  background-color: #ffc0c0;
+}
+#cardGallery {
+  display: flex; /* 要確保這行有作用 */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px;
+   max-height: 70vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.card {
+  width: 250px;
+  height: 350px;
+  background-image: url("images/card-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s;
+  cursor: pointer;
+
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+.card-content {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.card-content .quote-text {
+  font-weight: bold;
+  color: #333;
+  font-size: 1em;
+}
+
+
+.card-notes p {
+  margin: 4px 0;
+}
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+         #popupButtonWrapper {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1;
+}
+<!--淡入-->
+
+.hidden {
+  opacity: 0;
+}
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+    to   { opacity: 1; }
+
+}
+    </style>
+</head>
+<body onload="setRandomBackground()">
+
+<div id="contentWrapper">
+    <div id="fortune"style="opacity: 0;"  >
+        ✨21天正能量養成✨<br>用一張宇宙回音卡，開始今天的好心情。<br>備好了嗎?先深呼吸三次，<br>心中想著今天宇宙有什麼話想跟我說，<br>並按下接收。🌟</div>
+    <button id="drawBtn" onclick="drawFortune()" style="opacity: 0;" >接收 ✨</button>
+    <button id="bgBtn" onclick="setRandomBackground()" style="opacity: 0;">切換背景 🌈</button>
+    <button onclick="showCardGallery()" id="openGalleryBtn" style="opacity: 0;" >我的宇宙回音 💫</button>
+
+
+    <div id="bgSelector" class="bg-selector" style="display: none;">
+        <p>請選擇背景圖：</p>
+        <img src="images/bg1.png" class="bg-thumb" onclick="changeBackground('images/bg1.png')">
+        <img src="images/bg2.png" class="bg-thumb" onclick="changeBackground('images/bg2.png')">
+        <img src="images/bg3.png" class="bg-thumb" onclick="changeBackground('images/bg3.png')">
+        <img src="images/bg4.png" class="bg-thumb" onclick="changeBackground('images/bg4.png')">
+        <img src="images/bg5.png" class="bg-thumb" onclick="changeBackground('images/bg5.png')">
+        <img src="images/bg6.png" class="bg-thumb" onclick="changeBackground('images/bg6.png')">
+        <img src="images/bg7.png" class="bg-thumb" onclick="changeBackground('images/bg7.png')">
+        <img src="images/bg8.png" class="bg-thumb" onclick="changeBackground('images/bg8.png')">
+        <img src="images/bg9.png" class="bg-thumb" onclick="changeBackground('images/bg9.png')">
+        <img src="images/bg10.png" class="bg-thumb" onclick="changeBackground('images/bg10.png')">
+        <img src="images/bg11.png" class="bg-thumb" onclick="changeBackground('images/bg11.png')">
+    </div>
+</div>
+
+<div id="cardGallery" style="display:none;"></div>
+<div class="card-popup" id="cardPopup" style="display: none;">
+    <h2>✨ 你抽到的籤語 ✨</h2>
+    <p class="quote" id="cardQuote">「你沒有走得太慢，只是在好好感受風景。」</p>
+
+
+    <hr>
+    <h3>💡 讓我們寫下今天發生的任何美好事物</h3>
+    <div id="pupupButtonWrapper">
+        <textarea id="note1" placeholder="1. 今天遇見一個親切的人..."></textarea>
+        <textarea id="note2" placeholder="2. 吃到喜歡的甜點..."></textarea>
+        <textarea id="note3" placeholder="3. 和朋友聊得很開心..."></textarea>
+    </div>
+    <div id="closeCardPopup" class="popup-buttons" style="display:none; margin: 20px auto;">
+        <button onclick="saveNotes()">💾 保存筆記</button>
+        <button   onclick="closeCardPopup()">❎ 關閉</button>
+    </div>
+
+</div>
+<div id="cardGallery" style="display: none;"></div>
+<button id="closeGalleryBtn" style="display:none; margin: 20px auto;" onclick="closeCardGallery()">❎ 關閉</button>
+
+<script>
+    const backgrounds = [
+                         'images/bg1.png',
+                         'images/bg2.png',
+                         'images/bg3.png',
+                         'images/bg4.png',
+                         'images/bg5.png',
+                         'images/bg6.png',
+                         'images/bg7.png',
+                         'images/bg8.png',
+                         'images/bg9.png',
+                         'images/bg10.png',
+                         'images/bg11.png'
+
+                       ];
+                        function setRandomBackground() {
+                          const randomIndex = Math.floor(Math.random() * backgrounds.length);
+                          document.body.style.backgroundImage = `url('${backgrounds[randomIndex]}')`;
+                          document.body.style.backgroundSize = 'cover';
+                          document.body.style.backgroundPosition = 'center';
+                          document.body.style.backgroundRepeat = 'no-repeat';
+                        }
+    window.onload = function () {
+    setRandomBackground();
+    const elements = [
+    document.getElementById("fortune"),
+    document.getElementById("drawBtn"),
+    document.getElementById("bgBtn"),
+    document.getElementById("openGalleryBtn"),
+  ];
+
+ for (let i = 0; i < elements.length; i++) {
+  if (elements[i]) {
+    setTimeout(() => {
+      elements[i].classList.add("fade-in");
+    }, i * 600); // 每個元素延遲 600ms
+  }
+}
+};
+
+                       function drawFortune() {
+                               const today = new Date().toLocaleDateString();
+                          const lastDrawDate = localStorage.getItem("lastDrawDate");
+                          if (lastDrawDate === today) {
+                              alert("今天已經抽過囉～明天再來 🌟");
+                              document.getElementById("contentWrapper").style.display = "block";
+                 document.getElementById("fortune").style.display = "block";
+                              return;
+                          }
+
+                         const fortunes = [
+                           "你沒有走得太慢，只是在好好感受風景。",
+                           "今天的你，很努力了，該休息一下了。",
+                           "即使沒有人說，你也做得很好。",
+                           "你不需要完美，只要存在就足夠美好。",
+                           "世界有點吵，但你可以選擇靜下來。",
+                           "傷口會癒合，就像太陽總會升起。",
+                           "心軟不是缺點，是你心裡有溫柔的水源。",
+                           "當你學會溫柔對待自己，宇宙也會溫柔對你。",
+                           "別急，一切都會在剛剛好的時間到來。",
+                           "接受任何改變，讓自己變得更好。",
+                           "持續努力，事情會有方向，會越來越好。",
+                           "現在的你是處於最佳狀態，勇敢去冒險吧!",
+                           "改變雖難，勿畏懼，這是為了更好的人生。",
+                           "困境限制你，給自己力量，向前走便能突破。",
+                           "現在不宜衝動，先準備好再等時機。",
+                           "享受過去努力，妥善規劃未來新開始。",
+                           "解決未了的事，別活在過去。",
+                           "現在是最佳改變時機，等待將無法帶來變化。",
+                           "遇不適事情，離開即可，無需硬碰硬。",
+                           "將個人利益置於最後，任何目標都需付出代價。",
+                           "付出與回報要平衡，勿盲目付出或過度接受。",
+                           "若能把握機會，任何挫折都將轉化為你的武器。",
+                           "理性感性拉扯中，統整後隨直覺而行。",
+                           "新的開始將激發你的潛能，但別忘了好好休息。",
+                           "耐心點，給好運一點時間。",
+                           "近期可能迎來重大突破，接受改變，不要抗拒。",
+                           "相信直覺，重視過程，定能達到目標。",
+                           "多走走充實心靈，機會正逐漸靠近。",
+                           "你是擁有能力面對任何事情的，不用害怕相信自己。",
+                           "想做甚麼事情就去做，不要害怕犯錯。",
+                           "你內心是很強大的，沒有甚麼事會讓你到害怕。",
+                           "制定目標跟著感覺走，不能衝動隨時保持警覺。",
+                           "只要往前走絕對有解決的方法，停在原地是沒有幫助的。",
+                           "只要努力去做宇宙自然會幫助你。",
+                           "幫助他人也接受別人的幫助，人是需要互相依靠的。",
+                           "保持開放心態，相信自己，很多事情都會上軌道。",
+                           "過去付出的努力將會有結果。",
+                           "世界不變的道理就是一切都在變，接受改變，享受過程。"
+                         ];
+                      const result = fortunes[Math.floor(Math.random() * fortunes.length)];
+                          document.getElementById("fortune").innerText = result;
+
+                          localStorage.setItem("lastDrawDate", today);
+                          saveFortune(result);
+                         }
+                         function toggleBackgrounds() {
+                       const bgDiv = document.getElementById("bgSelector");
+                       bgDiv.style.display = (bgDiv.style.display === "none") ? "block" : "none";
+                      }
+
+                          function saveFortune(fortune) {
+                        let history = JSON.parse(localStorage.getItem("fortuneHistory")) || [];
+                        if (history.length > 0 && typeof history[0] === "string") {
+                          history = [];
+                        }
+                        const alreadyExists = history.some(item => item.text === fortune);
+                        if (!alreadyExists) {
+                          const today = new Date().toLocaleDateString();
+                          history.push({ text: fortune, date: today });
+                          localStorage.setItem("fortuneHistory", JSON.stringify(history));
+                        }
+                      }
+
+
+                      <!--集卡簿-->
+                      function saveNotes() {
+                        const quote = document.getElementById("cardQuote").innerText;
+                        const note1 = document.getElementById("note1").value;
+                        const note2 = document.getElementById("note2").value;
+                        const note3 = document.getElementById("note3").value;
+                        localStorage.setItem("notes_" + quote, JSON.stringify([note1, note2, note3]));
+                        alert("已保存今日的三件美好小事 💖");
+                      }
+                      function showCardGallery() {
+                        // 2. 顯示 cardGallery
+                        const history = JSON.parse(localStorage.getItem("fortuneHistory")) || [];
+                        const container = document.getElementById("cardGallery");
+                        container.innerHTML = ""; // 清空內容
+
+                        if (history.length === 0) {
+                          container.innerHTML = '<p style="text-align:center; font-size:1.2em;">你還沒有任何宇宙回音卡牌，快去抽一張吧！</p>';
+                        } else {
+                          history.forEach((item, index) => {
+                            if (!item || !item.text || !item.date) return;
+                            const card = document.createElement("div");
+                            card.className = "card";
+                            const notes = JSON.parse(localStorage.getItem("notes_" + item.text)) || ["", "", ""];
+                      card.innerHTML = `
+                        <div class="card-content">
+                        <p class="card-date">📅 ：${item.date}</p>
+                          <p class="quote-text">「${item.text}」</p>
+                          </div>
+                        <div class="card-content">
+                          <p>💡 1. ${notes[0] || "(尚未紀錄)"}</p>
+                          <p>💡 2. ${notes[1] || "(尚未紀錄)"}</p>
+                          <p>💡 3. ${notes[2] || "(尚未紀錄)"}</p>
+                        </div>
+                      `;
+                             card.onclick = () => openCardPopup(item.text);
+                            container.appendChild(card);
+                          });
+                        }
+                        container.style.display = "flex";
+                        // 3. 顯示關閉按鈕
+                        document.getElementById("closeGalleryBtn").style.display = "block";
+                        document.getElementById("contentWrapper").style.display = "none";
+                      }
+                      function migrateOldFortuneData() {
+                        let history = JSON.parse(localStorage.getItem("fortuneHistory")) || [];
+
+                        // 若資料已經轉過格式（是 object array），就跳過
+                        if (history.length > 0 && typeof history[0] === "object") return;
+
+                        const today = new Date().toLocaleDateString();
+                        const newHistory = history
+                          .filter(text => typeof text === "string" && text.trim() !== "") // 避免空字串
+                          .map(text => ({ text, date: today }));
+
+                        localStorage.setItem("fortuneHistory", JSON.stringify(newHistory));
+                      }
+                         function openCardPopup(text) {
+                        document.getElementById("cardQuote").innerText = text;
+                        const savedNotes = JSON.parse(localStorage.getItem("notes_" + text)) || ["", "", ""];
+                        document.getElementById("note1").value = savedNotes[0];
+                        document.getElementById("note2").value = savedNotes[1];
+                        document.getElementById("note3").value = savedNotes[2];
+                        document.getElementById("cardPopup").style.display = "block";
+                         document.getElementById("cardGallery").style.display = "none";
+                        document.getElementById("closeGalleryBtn").style.display = "none";
+                        document.getElementById("closeCardPopup").style.display = "flex";
+                      }
+         <!--             &lt;!&ndash;卡片&ndash;&gt;-->
+                      function closeCardPopup() {
+                        document.getElementById("cardPopup").style.display = "none";
+                        document.getElementById("contentWrapper").style.display = "none";
+                        document.getElementById("cardGallery").style.display = "flex";
+                        document.getElementById("closeGalleryBtn").style.display = "flex";
+                      }
+         <!--             &lt;!&ndash;集把簿&ndash;&gt;-->
+                          function closeCardGallery() {
+                           document.getElementById("contentWrapper").style.display = "block";
+                        document.getElementById("fortune").style.display = "flex";
+                        document.getElementById("closeCardPopup").style.display = "none";
+                        document.getElementById("closeGalleryBtn").style.display = "none";
+                      document.getElementById("cardGallery").style.display = "none";
+                      }
+
+
+<!--                        // ✅ 清除重複或格式錯誤的歷史紀錄（只跑一次）-->
+<!--                        const raw = JSON.parse(localStorage.getItem("fortuneHistory")) || [];-->
+<!--                        const seen = new Set();-->
+<!--                        const cleaned = raw.filter(item => {-->
+<!--                          if (!item.text || seen.has(item.text)) return false;-->
+<!--                          seen.add(item.text);-->
+<!--                          return true;-->
+<!--                        });-->
+<!--                        localStorage.setItem("fortuneHistory", JSON.stringify(cleaned));-->
+</script>
+</body>
+</html>

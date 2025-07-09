@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <title>21天好習慣養成</title>
+    <style>
+        body {
+     font-family: "Noto Sans TC", sans-serif;
+
+background:
+  linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)),
+  url('images/goodhabits.png');
+background-size: cover;
+height: 100vh;
+          display: flex;
+            justify-content: center;
+          align-items: center;
+     margin: 0;
+     padding: 0;
+   }
+
+   .container2 {
+      background-color: rgba(255, 255, 255, 0.4); /* 半透明白色 */
+     padding: 30px;
+     border-radius: 20px;
+     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+     text-align: center;
+   }
+
+   .goal-input {
+     margin-top: 20px;
+   }
+
+
+   .input-wrapper {
+     display: flex;
+     align-items: center;
+     background-color: #fff;
+     border: 2px solid #f7c8d0;
+     border-radius: 12px;
+     padding: 8px 12px;
+     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+     transition: 0.2s ease;
+     width: fit-content;
+     margin: 0 auto;
+   }
+
+   .input-wrapper:focus-within {
+     border-color: #f58fb0;
+     box-shadow: 0 0 10px rgba(245, 143, 176, 0.2);
+   }
+
+   .input-wrapper .emoji {
+     margin-right: 8px;
+     font-size: 20px;
+   }
+
+   .input-wrapper input {
+     border: none;
+     outline: none;
+     font-size: 16px;
+     padding: 6px 8px;
+     font-family: "Noto Sans TC", sans-serif;
+     width: 250px;
+   }
+
+   button {
+     padding: 10px 16px;
+     font-size: 16px;
+     background-color: #f7c8d0;
+     border: none;
+     border-radius: 12px;
+     cursor: pointer;
+     transition: background-color 0.2s ease;
+     margin-top: 10px;
+   }
+
+   button:hover {
+     background-color: #f58fb0;
+     color: white;
+   }
+/* 紀錄 */
+
+    .log {
+      display: none;
+    }
+     .nolog {
+      display: block;
+    }
+         h1 {
+      margin-bottom: 10px;
+    }
+
+    .status {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+
+    .day {
+      width: 70px;
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background-color: #f3f3f3;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 14px;
+      text-align: center;
+      padding: 5px;
+    }
+
+    .day.completed {
+      background-color: #b2f2bb;
+      color: #2f6632;
+      text-decoration: none;
+    }
+
+    .date-text {
+      font-size: 12px;
+      margin-top: 4px;
+    }
+.goal-item {
+  background-color: #fff;
+  padding: 16px 20px;
+  border: 2px solid #f7c8d0;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 18px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.goal-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  background-color: #fff0f4;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+/*bt*/
+  label {
+      font-weight: bold;
+    }
+     select {
+      padding: 8px 12px;
+      font-size: 16px;
+      margin: 12px 0;
+    }
+     .cute-btn {
+      display: block;
+      margin-top: 20px;
+      width: 250px;
+      padding: 15px 30px;
+      border-radius: 40px;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      box-shadow: 3px 4px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cute-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 6px 10px rgba(0,0,0,0.25);
+    }
+
+
+    .btn-orange { background: #ffe0b2; }
+    .btn-mint { background: #c0f1f1; }
+    .btn-lavender { background: #ecd9ff; }
+     .btn-yellow { background: #fff5aa; }
+    .btn-rose { background: #ffccd5; }
+    .btn-sky { background: #d0f0ff; }
+
+
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* 共用 */
+.goal-item {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin: 10px auto;
+  width: 300px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+        /*動畫*/
+        @keyframes slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+  opacity: 0; /* 開始時透明 */
+}
+
+
+    </style>
+</head>
+<body>
+<div  class="container2">
+    <!-- 標題、說明、輸入欄都包進來 -->
+    <h2 class="slide-up" style="animation-delay: 0.2s;">🌟 21天好習慣養成計畫</h2>
+    <p class="slide-up"  style="animation-delay: 0.4s;">你們知道嗎？一個好習慣只需要持續 21 天就能夠輕鬆養成。<br>
+        不論是建立新習慣還是改掉壞習慣，從今天開始，未來的你會感謝現在努力的自己！</p>
+
+    <div class="goal-input" >
+        <label for="goal">請輸入你的目標：</label><br>
+        <div class="goal-input">
+            <div class="input-wrapper">
+                <span class="emoji">📝</span>
+                <input type="text" id="goal" placeholder="例如：每天看一頁書">
+            </div>
+        <button onclick="startHabit()">開始</button>
+            <label for="goalStyle">選擇樣式：</label>
+            <select id="goalStyle">
+                <option value="btn-yellow">黃色</option>
+                <option value="btn-orange">橘色</option>
+                <option value="btn-mint">薄荷綠</option>
+                <option value="btn-lavender">薰衣草</option>
+                <option value="btn-rose">玫瑰粉</option>
+                <option value="btn-sky">天空藍</option>
+            </select>
+        </div>
+    </div>
+    <div id="goalList">
+    </div>
+</div>
+
+<div id="progressSection" class="log">
+    <h3>🎯 我的目標：<span id="goalText"></span></h3>
+    <div class="status">
+    完成天數：<span id="completedCount">0</span> 天 ｜ 剩餘天數：<span id="remainingCount">21</span> 天
+        <div id="calendarPage" >
+            <h3 id="calendarGoalTitle"></h3>
+        </div>
+    </div>
+    <div class="calendar" id="calendar"></div>
+    <button onclick="gohome()">回上一頁</button>
+
+
+</div>
+
+
+<script>
+    const goals = {}; // 儲存所有目標
+ const goalList = document.getElementById("goalList");
+
+ function startHabit() {
+  console.log("✅ 點到開始按鈕");
+  const goal = document.getElementById("goal").value.trim();
+const goalStyle = document.getElementById("goalStyle").value;
+  if (!goal) {
+    alert("請先輸入一個目標！");
+    return;
+
+  }
+
+  const goalId = Date.now().toString();
+  console.log("➡️ 建立目標 ID:", goalId);
+goals[goalId] = {
+  name: goal,
+  style: goalStyle,
+  completedDays: [],
+  completedDates: {}
+};
+ const item = document.createElement("div");
+item.classList.add("goal-item");
+item.classList.add(goals[goalId].style); // ✅ 加入樣式 class
+item.textContent = goals[goalId].name;
+item.textContent = goal; // 你原本的變數叫 goal，別亂改成 goalName
+item.onclick = () => {
+  console.log("🟢 點選目標，進入 showCalendar");
+  showCalendar(goalId);
+};
+goalList.appendChild(item);
+
+  goalList.appendChild(item);
+  document.getElementById("goal").value = "";
+}
+function showCalendar(goalId) {
+
+  const goalData = goals[goalId];
+  document.getElementById("goalText").textContent = goalData.name;
+  document.querySelector(".container2").classList.add("log");
+  document.getElementById("goalList").classList.add("log");
+  document.getElementById("progressSection").classList.remove("log");
+
+  const calendar = document.getElementById("calendar");
+  const completedCount = document.getElementById("completedCount");
+  const remainingCount = document.getElementById("remainingCount");
+
+  function updateStatus() {
+    completedCount.textContent = goalData.completedDays.length;
+    remainingCount.textContent = 21 - goalData.completedDays.length;
+  }
+
+  function createCalendar() {
+    calendar.innerHTML = "";
+    for (let i = 1; i <= 21; i++) {
+      const day = document.createElement("div");
+      const tag = `day-${i}`;
+      day.classList.add("day");
+
+      const title = document.createElement("div");
+      const dateText = document.createElement("div");
+      dateText.classList.add("date-text");
+
+      if (goalData.completedDays.includes(tag)) {
+        day.classList.add("completed");
+        title.textContent = `✅ Day ${i}`;
+        dateText.textContent = goalData.completedDates[tag] || "";
+      } else {
+        title.textContent = `Day ${i}`;
+      }
+
+      day.appendChild(title);
+      if (dateText.textContent) day.appendChild(dateText);
+
+      day.addEventListener("click", () => {
+        const today = new Date().toLocaleDateString();
+
+        if (!goalData.completedDays.includes(tag)) {
+          goalData.completedDays.push(tag);
+          goalData.completedDates[tag] = today;
+        } else {
+          goalData.completedDays = goalData.completedDays.filter(d => d !== tag);
+          delete goalData.completedDates[tag];
+        }
+
+        createCalendar();
+        updateStatus();
+      });
+
+      calendar.appendChild(day);
+    }
+  }
+
+  createCalendar();
+  updateStatus();
+}
+
+ function gohome() {
+document.getElementById("progressSection").classList.add("log");
+document.querySelector(".container2").classList.remove("log");
+  document.getElementById("goalList").classList.remove("log");
+ }
+
+const goalDiv = document.createElement("div");
+goalDiv.classList.add(document.getElementById("goalStyle").value);
+goalList.appendChild(goalDiv);
+
+
+
+
+</script>
+</body>
+</html>
